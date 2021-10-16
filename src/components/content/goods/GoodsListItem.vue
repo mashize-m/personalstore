@@ -1,7 +1,7 @@
 <template>
   <div class="goods-item">
-    <img :src="goodsItem.show.img" alt="">
-    <div class="goods-info">
+    <img :src="goodsItem.show.img" alt="" @load="imageLoad">
+    <div class=" goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
       <span class="collect">{{goodsItem.cfav}}</span>
@@ -22,6 +22,14 @@ export default {
       default () {
         return {}
       }
+    }
+  },
+  methods: {
+    imageLoad () {
+      // console.log('imageLoad')
+      // this.$bus.$emit --> 事件总线（类似于Vuex的一个东西，他是监听事件的）
+      this.$bus.$emit('itemImageLoad')
+      // console.log(this.$bus);   ----> undifind
     }
   }
 
