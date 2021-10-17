@@ -1,5 +1,5 @@
 <template>
-  <div class="goods-item">
+  <div class="goods-item" @click="itemClick">
     <img :src="goodsItem.show.img" alt="" @load="imageLoad">
     <div class=" goods-info">
       <p>{{goodsItem.title}}</p>
@@ -30,8 +30,20 @@ export default {
       // this.$bus.$emit --> 事件总线（类似于Vuex的一个东西，他是监听事件的）
       this.$bus.$emit('itemImageLoad')
       // console.log(this.$bus);   ----> undifind
+    },
+    itemClick () {
+      // console.log('跳转到详情页');
+      // 动态路由的方式，在index.js文件中提前设置 :id
+      this.$router.push("/detail/" + this.goodsItem.iid);
+      // query 方式传递参数
+      // this.$router.push({
+      //   path:'/detail',
+      //   query:{
+      //     id:"1111"
+      //   }
+      // })
     }
-  }
+  },
 
 }
 </script>
@@ -39,7 +51,6 @@ export default {
 .goods-item {
   padding-bottom: 40px;
   position: relative;
-
   width: 48%;
 }
 

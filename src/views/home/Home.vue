@@ -101,7 +101,7 @@ export default {
   },
   deactivated () {
     this.saveY = this.$refs.scroll.getScrollY();
-    console.log(this.saveY);
+    // console.log(this.saveY);
   },
   methods: {
 
