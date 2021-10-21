@@ -2,10 +2,11 @@
   <div id="detail">
     <!-- 1.导航 -->
     <detail-nav-bar class="detail-nav"></detail-nav-bar>
-    <scroll class="content">
+    <scroll class="content" ref="scroll">
       <detail-swiper :top-images="topImages"></detail-swiper>
       <detail-base-info :goods="goods"></detail-base-info>
       <detail-shop-info :shop="shop"></detail-shop-info>
+      <detail-goods-info :detail-info="detailInfo" @image-load="imageLoad"></detail-goods-info>
     </scroll>
   </div>
 </template>
@@ -15,6 +16,7 @@ import DetailNavBar from './childComps/DetailNavBar';
 import DetailSwiper from './childComps/DetailSwiper';
 import DetailBaseInfo from './childComps/DetailBaseInfo.vue';
 import DetailShopInfo from './childComps/DetailShopInfo.vue';
+import DetailGoodsInfo from './childComps/DetailGoodsInfo';
 
 import Scroll from 'components/common/scroll/Scroll';
 
@@ -29,6 +31,7 @@ export default {
     DetailBaseInfo,
     DetailShopInfo,
     Scroll,
+    DetailGoodsInfo,
   },
   data () {
     return {
@@ -36,6 +39,7 @@ export default {
       topImages: [],
       goods: {},
       shop: {},
+      detailInfo: {},
     };
   },
   created () {
@@ -55,8 +59,21 @@ export default {
 
       // 3.获取店铺信息
       this.shop = new Shop(data.shopInfo)
-    });
 
+      // 4.保存商品的详情数据
+      this.detailInfo = data.detailInfo;
+    });
+  },
+  // 第一种方法：弹幕提示--通过这个方式也可以实现重新计算高度
+  // updated () {
+  //   this.$ref.scroll.refresh()
+  // },
+  // 第二种方法：通过防抖函数--参考之前home的内容
+  // 第三种方法：通过监听detailInfo数据变化，当图片加载全部加载完后，发出emit请求
+  methods: {
+    imageLoad () {
+      this.$ref.scroll.refresh()
+    }
   },
 
 }

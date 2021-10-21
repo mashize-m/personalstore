@@ -1,4 +1,4 @@
-// 防抖函数
+// 防抖函数。delay：延迟事件
 export function debounce(func, delay) {
   let timer = null;
   return function(...args) {

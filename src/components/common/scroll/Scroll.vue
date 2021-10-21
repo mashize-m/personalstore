@@ -56,18 +56,20 @@ export default {
     }
   },
   methods: {
-    // time=300 是设置默认值
+    // 滚动到指定位置。time是执行的时长，time=300 是设置默认值
     scrollTo (x, y, time = 300) {
       this.scroll && this.scroll.scrollTo(x, y, time)
     },
     finishPullUp () {
+      // 当上拉加载数据加载完毕后，需要调用此方法告诉 better-scroll 数据已加载
       this.scroll.finishPullUp()
     },
     refresh () {
-      // console.log('-------');
+      // 重新计算 better-scroll
       this.scroll && this.scroll.refresh()
     },
     getScrollY () {
+      // 获取scroll 纵轴坐标
       return this.scroll ? this.scroll.y : 0
     }
   },
