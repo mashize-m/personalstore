@@ -7,6 +7,7 @@
       <detail-base-info :goods="goods"></detail-base-info>
       <detail-shop-info :shop="shop"></detail-shop-info>
       <detail-goods-info :detail-info="detailInfo" @image-load="imageLoad"></detail-goods-info>
+      <detail-param-info :param-info="paramInfo"></detail-param-info>
     </scroll>
   </div>
 </template>
@@ -17,10 +18,11 @@ import DetailSwiper from './childComps/DetailSwiper';
 import DetailBaseInfo from './childComps/DetailBaseInfo.vue';
 import DetailShopInfo from './childComps/DetailShopInfo.vue';
 import DetailGoodsInfo from './childComps/DetailGoodsInfo';
+import DetailParamInfo from './childComps/DetailParamInfo';
 
 import Scroll from 'components/common/scroll/Scroll';
 
-import { getDetail, Goods, Shop } from 'network/detail'
+import { getDetail, Goods, Shop, GoodsParam } from 'network/detail'
 
 
 export default {
@@ -32,6 +34,7 @@ export default {
     DetailShopInfo,
     Scroll,
     DetailGoodsInfo,
+    DetailParamInfo,
   },
   data () {
     return {
@@ -40,6 +43,8 @@ export default {
       goods: {},
       shop: {},
       detailInfo: {},
+      paramInfo: {},
+
     };
   },
   created () {
@@ -62,6 +67,9 @@ export default {
 
       // 4.保存商品的详情数据
       this.detailInfo = data.detailInfo;
+
+      // 5.获取商品参数信息
+      this.paramInfo = new GoodsParam(data.itemParams.info, data.itemParams.rule)
     });
   },
   // 第一种方法：弹幕提示--通过这个方式也可以实现重新计算高度
