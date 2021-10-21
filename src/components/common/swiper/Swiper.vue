@@ -18,18 +18,22 @@
 export default {
   name: "Swiper",
   props: {
+    // 间隔时间
     interval: {
       type: Number,
       default: 3000
     },
+    // 动画持续时间
     animDuration: {
       type: Number,
       default: 300
     },
+    // 移动比例
     moveRatio: {
       type: Number,
       default: 0.25
     },
+    // 显示指示器
     showIndicator: {
       type: Boolean,
       default: true
@@ -51,7 +55,7 @@ export default {
 
       // 2.开启定时器
       this.startTimer();
-    }, 200)
+    }, 500)
   },
   methods: {
     /**
