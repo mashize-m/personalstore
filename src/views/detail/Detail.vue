@@ -8,6 +8,7 @@
       <detail-shop-info :shop="shop"></detail-shop-info>
       <detail-goods-info :detail-info="detailInfo" @image-load="imageLoad"></detail-goods-info>
       <detail-param-info :param-info="paramInfo"></detail-param-info>
+      <detail-comment-info :comment="commentInfo"></detail-comment-info>
     </scroll>
   </div>
 </template>
@@ -19,6 +20,7 @@ import DetailBaseInfo from './childComps/DetailBaseInfo.vue';
 import DetailShopInfo from './childComps/DetailShopInfo.vue';
 import DetailGoodsInfo from './childComps/DetailGoodsInfo';
 import DetailParamInfo from './childComps/DetailParamInfo';
+import DetailCommentInfo from './childComps/DetailCommentInfo';
 
 import Scroll from 'components/common/scroll/Scroll';
 
@@ -35,6 +37,7 @@ export default {
     Scroll,
     DetailGoodsInfo,
     DetailParamInfo,
+    DetailCommentInfo,
   },
   data () {
     return {
@@ -44,7 +47,7 @@ export default {
       shop: {},
       detailInfo: {},
       paramInfo: {},
-
+      commentInfo: {},
     };
   },
   created () {
@@ -54,22 +57,29 @@ export default {
 
     // 2.根据iid请求详情数据
     getDetail(this.iid).then(res => {
-      // 1. 获取顶部的轮播图
       console.log(res);
+      // 1.获取数据
       const data = res.result;
+
+      // 2.获取轮播图数据
       this.topImages = data.itemInfo.topImages
 
-      // 2.获取商品信息
+      // 3.获取商品信息
       this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services)
 
-      // 3.获取店铺信息
+      // 4.获取店铺信息
       this.shop = new Shop(data.shopInfo)
 
-      // 4.保存商品的详情数据
+      // 5.保存商品的详情数据
       this.detailInfo = data.detailInfo;
 
-      // 5.获取商品参数信息
+      // 6.获取商品参数信息
       this.paramInfo = new GoodsParam(data.itemParams.info, data.itemParams.rule)
+
+      // 7.获取评论信息
+      if (data.rate.cRate !== 0) {
+        this.commentInfo = data.rate.list[0]
+      }
     });
   },
   // 第一种方法：弹幕提示--通过这个方式也可以实现重新计算高度
