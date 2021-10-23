@@ -9,6 +9,7 @@
       <detail-goods-info :detail-info="detailInfo" @image-load="imageLoad"></detail-goods-info>
       <detail-param-info :param-info="paramInfo"></detail-param-info>
       <detail-comment-info :comment="commentInfo"></detail-comment-info>
+      <goods-list :goods="recommends"></goods-list>
     </scroll>
   </div>
 </template>
@@ -23,8 +24,9 @@ import DetailParamInfo from './childComps/DetailParamInfo';
 import DetailCommentInfo from './childComps/DetailCommentInfo';
 
 import Scroll from 'components/common/scroll/Scroll';
+import GoodsList from 'components/content/goods/GoodsList'
 
-import { getDetail, Goods, Shop, GoodsParam } from 'network/detail'
+import { getDetail, Goods, Shop, GoodsParam, getRecommend } from 'network/detail'
 
 
 export default {
@@ -38,6 +40,7 @@ export default {
     DetailGoodsInfo,
     DetailParamInfo,
     DetailCommentInfo,
+    GoodsList,
   },
   data () {
     return {
@@ -48,6 +51,7 @@ export default {
       detailInfo: {},
       paramInfo: {},
       commentInfo: {},
+      recommends: [],
     };
   },
   created () {
@@ -57,7 +61,7 @@ export default {
 
     // 2.根据iid请求详情数据
     getDetail(this.iid).then(res => {
-      console.log(res);
+      // console.log(res);
       // 1.获取数据
       const data = res.result;
 
@@ -81,6 +85,12 @@ export default {
         this.commentInfo = data.rate.list[0]
       }
     });
+
+    // 3.请求推荐数据
+    getRecommend().then(res => {
+      console.log(res);
+      this.recommends = res.data.list
+    })
   },
   // 第一种方法：弹幕提示--通过这个方式也可以实现重新计算高度
   // updated () {
@@ -89,6 +99,7 @@ export default {
   // 第二种方法：通过防抖函数--参考之前home的内容
   // 第三种方法：通过监听detailInfo数据变化，当图片加载全部加载完后，发出emit请求
   methods: {
+    // 图片加载后进行刷新
     imageLoad () {
       this.$ref.scroll.refresh()
     }
