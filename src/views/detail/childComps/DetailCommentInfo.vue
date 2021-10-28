@@ -1,106 +1,106 @@
 <template>
-  <div id="detail_comment" v-if="Object.keys(comment).length != 0">
-    <div class="comment_title">
-      <span class="comment_name">用户评价</span>
-      <span class="comment_more">更多</span>
-    </div>
-
-    <div class="comment_info">
-      <div class="u_info">
-        <img :src="comment.user.avatar" alt="" />
-        <span>{{ comment.user.uname }}</span>
+  <div>
+    <div class="comment-info" v-if="Object.keys(commentInfo).length !== 0">
+      <div class="info-header">
+        <div class="header-title">用户评价</div>
+        <div class="header-more">
+          更多
+          <i class="arrow-right" />
+        </div>
       </div>
-      <div class="comment_content">
-        <div class="content">{{ comment.content }}</div>
-        <p class="content_info">
-          {{dateShow(comment.created)}} {{ comment.style }}
-        </p>
+      <div class="info-user">
+        <img :src="commentInfo.user.avatar" alt="" />
+        <span>{{ commentInfo.user.uname }}</span>
+      </div>
+      <div class="info-detail">
+        <p>{{ commentInfo.content }}</p>
+        <div class="info-other">
+          <span class="date">{{ showDate(commentInfo.created) }}</span>
+          <span>{{ commentInfo.style }}</span>
+        </div>
+        <div class="info-imgs">
+          <img :key="index" :src="item" alt="" v-for="(item, index) in commentInfo.images" />
+        </div>
       </div>
     </div>
-
-    <div class="shop_reply" v-if="comment.explain != null">
-      {{ comment.explain }}
-    </div>
-    <div class="comment_img" v-if="comment.images != null">
-      <img :src="item" alt="" v-for="(item, index) in comment.images" :key="index" />
-    </div>
+    <div class="comment-info" style="color: red;" v-else>暂无用户评论</div>
   </div>
 </template>
+
 <script>
-import { formatDate } from "common/utils.js";
+import { formatDate } from "@/common/utils";
 export default {
+  name: "DetailCommentInfo",
   props: {
-    comment: {
-      type: Object,
-      default () {
-        return {};
-      }
+    commentInfo: {
+      type: Object
     }
   },
   methods: {
-    dateShow (value) {
+    showDate: function (value) {
       let date = new Date(value * 1000);
-      return formatDate(date, "yyyy-MM-dd");
+      return formatDate(date, "yyyy-MM-dd hh:mm");
     }
   }
 };
 </script>
+
 <style scoped>
-#detail_comment {
-  font-size: 0.65rem;
-  padding: 0.42rem 0.34rem;
+.comment-info {
+  padding: 5px 12px;
+  color: #333333;
+  border-bottom: 5px solid #f2f5f8;
 }
-.comment_title {
-  padding: 0.42rem 0;
-  padding-bottom: 0.8rem;
-  border-bottom: 0.08rem solid rgba(128, 128, 128, 0.3);
-  position: relative;
+.info-header {
+  line-height: 50px;
+  height: 50px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
-.comment_more {
-  position: absolute;
-  right: -0.26rem;
-  top: 0rem;
+.header-title {
+  font-size: 13px;
+  float: left;
 }
-.comment_more::after {
-  content: "";
-  background: url("~assets/img/detail/right_arrow.svg") 0 0/1.06rem 1.06rem;
-  display: inline-block;
-  position: relative;
-  top: 0.26rem;
-  width: 1.06rem;
-  height: 1.06rem;
+.header-more {
+  font-size: 13px;
+  float: right;
+  margin-right: 10px;
 }
-.u_info {
-  padding: 0.42rem 0;
-  line-height: 1.8rem;
-  display: flex;
+.info-user {
+  padding: 10px 0 5px;
 }
-.u_info img {
-  width: 1.8rem;
-  height: 1.8rem;
+.info-user img {
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  border: 0.04rem solid rgba(128, 128, 128, 0.3);
 }
-.u_info span {
-  margin-left: 0.42rem;
+.info-user span {
+  font-size: 13px;
+  position: relative;
+  top: -15px;
+  margin-left: 10px;
 }
-.content {
-  line-height: 1rem;
-  color: #666;
+.info-detail {
+  padding: 0 5px 15px;
 }
-.content_info {
-  color: #999;
-  padding: 0.3rem 0;
+.info-detail p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #777777;
 }
-.shop_reply {
-  border-top: 0.04rem solid rgba(128, 128, 128, 0.4);
-  padding: 0.5rem 0;
-  color: gray;
-  line-height: 0.8rem;
+.info-detail .info-other {
+  font-size: 12px;
+  margin-top: 10px;
+  color: #999999;
 }
-.comment_img img {
-  margin-right: 0.21rem;
-  width: auto;
-  height: 4.26rem;
+.info-other .date {
+  margin-right: 8px;
+}
+.info-imgs {
+  margin-top: 10px;
+}
+.info-imgs img {
+  width: 70px;
+  height: 70px;
+  margin-right: 5px;
 }
 </style>

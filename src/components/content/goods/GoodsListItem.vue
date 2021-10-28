@@ -34,6 +34,12 @@ export default {
       // console.log('imageLoad')
       // this.$bus.$emit --> 事件总线（类似于Vuex的一个东西，他是监听事件的）
       this.$bus.$emit('itemImageLoad')
+
+      // if (this.$route.path.indexOf('/home')) {
+      //   this.$bus.$emit('homeItemImageLoad')
+      // }else if (this.$route.path.indexOf('/detail')) {
+      //   this.$bus.$emit('detailItemImageLoad')
+      // }
       // console.log(this.$bus);   ----> undifind
     },
     itemClick () {

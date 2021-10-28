@@ -36,7 +36,7 @@ import BackTop from "components/content/backtop/BackTop"
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
 import { debounce } from "@/common/utils";
-
+import { itemListenerMixin, backTopMixin } from 'common/mixin';
 export default {
   components: {
     HomeSwiper,
@@ -46,8 +46,9 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
-    BackTop,
+    // BackTop,
   },
+  mixins: [itemListenerMixin, backTopMixin],
   data () {
     return {
       banners: [],
@@ -58,10 +59,11 @@ export default {
         'sell': { page: 0, list: [] },
       },
       currentType: 'pop',
-      isShowBackTop: false,
+      // isShowBackTop: false,
       tabOffsetTop: 0,
       isTabFixed: false,
       saveY: 0,
+
     }
   },
   computed: {
@@ -80,16 +82,22 @@ export default {
     this.getHomeGoods('sell')
   },
   mounted () {
+
+    // 通过混入方式添加
+
     // 监听事件总线（item中图片加载完成）
     // this.$bus.$on('itemImageLoad', () => {
     //   console.log('------');
     //   this.$refs.scroll && this.$refs.scroll.refresh()
     // })
     // 1. 图片加载完成的事件监听
-    const refresh = debounce(this.$refs.scroll.refresh, 300)
-    this.$bus.$on('itemImageLoad', () => {
-      refresh()
-    })
+    // const refresh = debounce(this.$refs.scroll.refresh, 300)
+    // 2. 对监听的事件进行保存
+    // this.itemImgListener = () => {
+    //   refresh()
+    // }
+    // 3.监听事件总线中的函数
+    // this.$bus.$on('itemImageLoad', itemImgListener)
 
   },
   destroyed () {
@@ -100,8 +108,12 @@ export default {
     this.$refs.scroll.scrollTo(0, this.saveY, 1)
   },
   deactivated () {
+    // 1.保存滚动Y值
     this.saveY = this.$refs.scroll.getScrollY();
     // console.log(this.saveY);
+
+    // 2.取消全局事件的监听
+    this.$bus.$off('itemImageLoad', this.itemImgListener)
   },
   methods: {
 
@@ -137,10 +149,10 @@ export default {
       this.$refs.tabControl1.currentIndex = index;
       this.$refs.tabControl2.currentIndex = index;
     },
-    backClick () {
-      // 获取scroll组件下的scrollTo方法
-      this.$refs.scroll.scrollTo(0, 0, 500)
-    },
+    // backClick () {
+    //   // 获取scroll组件下的scrollTo方法
+    //   this.$refs.scroll.scrollTo(0, 0, 500)
+    // },
     contentScroll (position) {
       // 1. 判断backtop是否显示
       // console.log(position);

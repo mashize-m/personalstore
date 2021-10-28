@@ -8,7 +8,7 @@
     </div>
     <div class="info-key">{{detailInfo.detailImage[0].key}}</div>
     <div class="info-list">
-      <img v-for="(item, index) in detailInfo.detailImage[0].list" :key="index" :src="item" @load="imgLoad" alt="">
+      <img v-for="(item, index) in detailInfo.detailImage[0].list" :key="index" :src="item" @load="imageLoad" alt="">
     </div>
   </div>
 </template>
@@ -28,7 +28,7 @@ export default {
     }
   },
   methods: {
-    imgLoad () {
+    imageLoad () {
       // 判断, 所有的图片都加载完了, 那么进行一次回调就可以了.
       // ++this.counter  -->  this.counter += 1  
       if (++this.counter === this.imagesLength) {
