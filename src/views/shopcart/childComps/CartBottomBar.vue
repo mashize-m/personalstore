@@ -3,7 +3,7 @@
     <CheckButton class="select-all" @checkBtnClick="checkBtnClick" v-model="isSelectAll"></CheckButton>
     <span>全选</span>
     <span class="total-price">合计: ¥{{totalPrice}}</span>
-    <span class="buy-product">去计算({{checkLength}})</span>
+    <span class="buy-product" @click="calcClick">去计算({{checkLength}})</span>
   </div>
 </template>
 
@@ -28,7 +28,11 @@ export default {
       return this.$store.state.cartList.filter(item => item.checked).length
     },
     isSelectAll: function () {
-      return this.$store.getters.cartList.find(item => item.checked === false) === undefined;
+      if (this.$store.getters.cartList.length === 0) {
+        return false
+      } else {
+        return this.$store.getters.cartList.find(item => item.checked === false) === undefined;
+      }
     }
   },
   methods: {
@@ -45,6 +49,11 @@ export default {
         this.$store.state.cartList.forEach(item => {
           item.checked = false;
         });
+      }
+    },
+    calcClick () {
+      if (this.checkLength === 0) {
+        this.$toast.show('请选择购买的商品', 1500)
       }
     }
   }
